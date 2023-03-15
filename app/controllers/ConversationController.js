@@ -93,17 +93,28 @@ exports.create = async (req, res) => {
 
 // get all user records
 exports.findAll = async (req, res) => {
-  userModel
-    .find()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((error) => {
-      res.status(500).send({
-        message: error.message || "Some Thing went wrong",
-        detail: error,
-      });
+  try {
+    if(!req.params.user_id) throw new Error("Id is required")
+    const data = await conversationModel.find({user_id:req.params.user_id})
+    res.send(data)
+    // .then((data) => {
+    //   res.send(data);
+
+    // })
+    // .catch((error) => {
+    //   res.status(500).send({
+    //     message: error.message || "Some Thing went wrong",
+    //     detail: error,
+    //   });
+    // });
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      message: error.message || "Some Thing went wrong",
+      detail: error,
     });
+  }
+  
 };
 
 // get only one user
@@ -175,6 +186,25 @@ exports.findConversationMessages = async (req, res) => {
   messageModel
     .find({"conversation_id":req.params.conv_id})
     .exec((err, messages) => {
+      if (err) {
+        // Handle error
+        console.error(err);
+        return res.status(500).send({
+          message: err.message || "Something went wrong",
+        });
+      }
+
+      // Conversation found and its messages populated
+      console.log(messages, "This is conversation with messages");
+      res.send(messages);
+    });
+};
+
+exports.allConversations = async (req, res) => {
+  console.log(req.user_id, "this is req");
+  conversationModel
+    .find()
+    .then((err, messages) => {
       if (err) {
         // Handle error
         console.error(err);

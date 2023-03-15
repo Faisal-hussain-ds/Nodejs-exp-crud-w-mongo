@@ -7,10 +7,13 @@ const conversationController = require("../controllers/conversationController.js
 router.post("/conv-chat", conversationController.create);
 
 // Retrieve all users
-router.get("/", conversationController.findAll);
+router.get("/conv/all/:user_id", conversationController.findAll);
 
 // Retrieve a single user with userId
 router.get("/conv/:conv_id", conversationController.findOne);
+
+// get all conversations
+// router.get("/conv/get", conversationController.allConversations);
 
 // get messages of a conversation
 router.get("/conv/messages/:conv_id", conversationController.findConversationMessages);
