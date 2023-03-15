@@ -10,7 +10,10 @@ router.post("/conv-chat", conversationController.create);
 router.get("/", conversationController.findAll);
 
 // Retrieve a single user with userId
-router.get("/conv/:userId", conversationController.findOne);
+router.get("/conv/:conv_id", conversationController.findOne);
+
+// get messages of a conversation
+router.get("/conv/messages/:conv_id", conversationController.findConversationMessages);
 
 // Update a user with userId
 router.put("/conv/:userId", conversationController.update);

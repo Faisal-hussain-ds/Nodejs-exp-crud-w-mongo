@@ -4,9 +4,8 @@ const userSchema = new mongoose.Schema(
   {
 
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
-    message_count: { type: Number}
-  
-
+    message_count: { type: Number,default:1},
+   
   },
 
  { timestamps: true,
