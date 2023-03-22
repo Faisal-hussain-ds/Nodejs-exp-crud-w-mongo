@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
 
   // Find a record by ID
   await conversationModel
-    .findById("6411ac9cd3bed18503a9e9d6")
+    .findById(req.body.conv_id?req.body.conv_id:'6411ac9cd3bed18503a9e9d6')
     .exec((err, record) => {
       if (err) {
         // Handle error
@@ -50,7 +50,7 @@ exports.create = async (req, res) => {
     .then((response) => {
       if (
         conversationExist &&
-        conversationExist._id == "6411ac9cd3bed18503a9e9d6"
+        conversationExist._id
       ) {
 
         console.log('conversation is exit',conversationExist.message_count)
@@ -95,18 +95,21 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
   try {
     if(!req.params.user_id) throw new Error("Id is required")
-    const data = await conversationModel.find({user_id:req.params.user_id})
-    res.send(data)
-    // .then((data) => {
-    //   res.send(data);
+    // const data = await conversationModel.find({user_id:req.params.user_id})
+    // res.send(data)
 
-    // })
-    // .catch((error) => {
-    //   res.status(500).send({
-    //     message: error.message || "Some Thing went wrong",
-    //     detail: error,
-    //   });
-    // });
+    messageModel.aggregate([
+      // { $match: { user_id: req.params.user_id } },
+      { $group: { _id: '$conversation_id', messages: { $push: '$$ROOT' } } }
+    ]).exec((err, result) => {
+      if (err) {
+        // handle error
+      } else {
+        console.log(result);
+        res.send(result)
+      }
+    });
+
   } catch (error) {
     console.log(error)
     res.status(500).send({
