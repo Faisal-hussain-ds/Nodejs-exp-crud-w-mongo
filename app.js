@@ -76,7 +76,7 @@ app.post("/register", async (req, res) => {
 
     // return new user
     res.status(201).json(user);
-  } catch (err) {
+  } catch (err) { 
     console.log(err, "<==== This is error");
   }
   // Our register logic ends here
