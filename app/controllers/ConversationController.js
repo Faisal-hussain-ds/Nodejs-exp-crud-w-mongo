@@ -221,3 +221,28 @@ exports.allConversations = async (req, res) => {
       res.send(messages);
     });
 };
+
+
+exports.speachToText=async(req,res)=>{
+  console.log('this is speach to text function');
+
+  const { API_KEY } = process.env;
+  const reqData = {
+    model: "whisper-1",
+    file: "",
+  };
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${API_KEY}`,
+  };
+
+  await http
+    .post("https://api.openai.com/v1/audio/transcriptions", reqData, {
+      headers: headers,
+    })
+    .then((response) => {
+
+      console.log('this is response',response);
+    });
+} 

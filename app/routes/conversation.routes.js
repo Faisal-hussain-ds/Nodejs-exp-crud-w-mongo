@@ -3,6 +3,9 @@ const express = require("express"),
 
 const conversationController = require("../controllers/conversationController.js");
 
+const multer = require('multer');
+const upload = multer();
+
 // Create a new user
 router.post("/conv-chat", conversationController.create);
 
@@ -24,4 +27,11 @@ router.put("/conv/:userId", conversationController.update);
 
 // Delete a user with userId
 router.delete("/conv/:userId", conversationController.delete);
+
+
+
+// speach to text 
+
+router.post("/speach-to-text",upload.none(), conversationController.speachToText);
+
 module.exports = router;
